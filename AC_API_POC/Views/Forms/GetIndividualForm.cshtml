@@ -1,0 +1,26 @@
+﻿@model AssessmentCenter.Models.Forms.IndividualFormResponse
+
+@foreach (var item in Model.Items)
+{
+    <table style="width:100%" border="0">
+        <tr>
+            <td>
+                <p>ItemID: @item.ID</p>
+                @foreach (var element in item.Elements)
+                {
+                    @if (element.Map == null || element.Map.Count == 0)
+                    {
+                        <p>@element.Description</p>
+                    }
+                    else
+                    {
+                        @foreach (var map in element.Map)
+                        {
+                            <p>(@map.Description)</p>
+                        }
+                    }
+                }
+            </td>
+        </tr>
+    </table>
+}

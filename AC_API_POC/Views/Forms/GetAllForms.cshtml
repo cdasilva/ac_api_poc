@@ -1,0 +1,12 @@
+﻿@model AssessmentCenter.Models.Forms.AllFormsResponse
+
+<table>
+    @foreach( var form in Model.Form )
+    {
+        <tr>
+            <td style="width:50%">@form.OID</td>
+            <td style="width:50%">@form.Name</td>
+        </tr>
+    }
+</table>
+
