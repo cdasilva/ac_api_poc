@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AssessmentCenter.Models.Xml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,8 +7,22 @@ using System.Xml.Serialization;
 
 namespace AssessmentCenter.Models.Forms
 {
-    public class FormMap
+    public class MapViewModel
     {
+        public MapViewModel()
+        {
+        }
+
+        public MapViewModel(MapXml map)
+        {
+            ElementOID = map.ElementOID ?? "";
+            Description = map.Description ?? "";
+            FormItemOID = map.FormItemOID ?? "";
+            ItemResponseOID = map.ItemResponseOID ?? "";
+            Value = map.Value ?? "";
+            Position = map.Position ?? "";
+        }
+
         [XmlAttribute]
         public string ElementOID
         {

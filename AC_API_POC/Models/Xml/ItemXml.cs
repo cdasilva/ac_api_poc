@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace AssessmentCenter.Models.Forms
+namespace AssessmentCenter.Models.Xml
 {
-    public class FormItem
+    public class ItemXml
     {
+        [XmlAttribute]
+        public string ItemDataOID
+        {
+            get;
+            set;
+        }
+
         [XmlAttribute]
         public string FormItemOID
         {
@@ -30,7 +35,21 @@ namespace AssessmentCenter.Models.Forms
         }
 
         [XmlAttribute]
-        public string ID
+        public string ResponseTime
+        {
+            get;
+            set;
+        }
+
+        [XmlAttribute]
+        public string Position
+        {
+            get;
+            set;
+        }
+
+        [XmlAttribute]
+        public string Section
         {
             get;
             set;
@@ -44,14 +63,21 @@ namespace AssessmentCenter.Models.Forms
         }
 
         [XmlAttribute]
+        public string ID
+        {
+            get;
+            set;
+        }
+
+        [XmlAttribute]
         public string ItemType
         {
             get;
             set;
         }
 
-        [XmlElement(ElementName = "Element")]
-        public List<FormElement> Elements
+        [XmlArrayItem(ElementName = "Element")]
+        public List<ElementXml> Elements
         {
             get;
             set;

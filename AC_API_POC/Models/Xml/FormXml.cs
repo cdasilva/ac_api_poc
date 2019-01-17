@@ -1,38 +1,44 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace AssessmentCenter.Models.Forms
+namespace AssessmentCenter.Models.Xml
 {
-    public class FormElement
+    [XmlRoot(ElementName = "Form")]
+    public class FormXml
     {
         [XmlAttribute]
-        public string ElementOID
+        public string Status
         {
             get;
             set;
         }
 
         [XmlAttribute]
-        public string Description
+        public string DateFinished
         {
             get;
             set;
         }
 
         [XmlAttribute]
-        public string ElementOrder
+        public string Engine
         {
             get;
             set;
         }
 
-        [XmlElement(ElementName = "Map")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public List<FormMap> Map
+        [XmlAttribute]
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        [XmlArrayItem(ElementName = "Item")]
+        public List<ItemXml> Items
         {
             get;
             set;

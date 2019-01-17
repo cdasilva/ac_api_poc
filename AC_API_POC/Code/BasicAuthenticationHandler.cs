@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AssessmentCenter.Models.Database;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -14,14 +15,17 @@ namespace AssessmentCenter.Code
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
+        private readonly AssessmentCenterContext _context;
+
         public BasicAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
-            ISystemClock clock)
+            ISystemClock clock,
+            AssessmentCenterContext context)
             : base(options, logger, encoder, clock)
         {
-            //TODO: Inject Database Context
+            _context = context;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -46,10 +50,13 @@ namespace AssessmentCenter.Code
                 return AuthenticateResult.Fail("Invalid Authorization Header");
             }
 
-            //TODO: Pull registration details out of the database
+            if (!Guid.TryParse(username, out Guid registrationOid))
+                return AuthenticateResult.Fail("Unauthorized");
 
-            bool authenticated = true; //TODO: Check to see if username/password is correct
+            var registration = await _context.FindAsync<RegistrationData>(registrationOid);
 
+            bool authenticated = registration != null && registration.Token.ToString().ToLower() == password.ToLower();
+            
             if (!authenticated)
                 return AuthenticateResult.Fail("Unauthorized");
 

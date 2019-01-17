@@ -1,12 +1,16 @@
-﻿@model AssessmentCenter.Models.Forms.AllFormsResponse
+﻿@model AssessmentCenter.Models.Forms.MultiFormViewModel
 
-<table>
-    @foreach( var form in Model.Form )
-    {
+@foreach (var form in Model.Form)
+{
+    <table style="width:100%">
         <tr>
             <td style="width:50%">@form.OID</td>
             <td style="width:50%">@form.Name</td>
+            @if (form.LoincCode != null)
+            {
+                <td style="width:50%">@form.LoincCode</td>
+            }
         </tr>
-    }
-</table>
+    </table>
+}
 

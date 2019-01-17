@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AssessmentCenter.Models.Xml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,8 +13,24 @@ namespace AssessmentCenter.Models.Forms
     // (e.g. DateTime?) and let consumers handle the nulls as nulls instead of empty strings.
 
     [XmlRoot(ElementName = "Form")]
-    public class IndividualFormResponse
+    public class SingleFormViewModel
     {
+        public SingleFormViewModel()
+        {
+        }
+
+        public SingleFormViewModel(FormXml form)
+        {
+            DateFinished = form.DateFinished ?? "";
+
+            if (form.Items.Count > 0)
+            {
+                Items = new List<ItemViewModel>(form.Items.Count);
+                foreach (var item in form.Items)
+                    Items.Add(new ItemViewModel(item));
+            }
+        }
+
         [XmlAttribute]
         public string DateFinished
         {
@@ -22,7 +39,7 @@ namespace AssessmentCenter.Models.Forms
         }
 
         [XmlElement(ElementName = "Item")]
-        public List<FormItem> Items
+        public List<ItemViewModel> Items
         {
             get;
             set;

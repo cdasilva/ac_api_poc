@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AssessmentCenter.Code;
+using AssessmentCenter.Models.Database;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,7 +27,6 @@ namespace AssessmentCenter
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options =>
@@ -38,17 +39,17 @@ namespace AssessmentCenter
                 .AddXmlSerializerFormatters()
                 .AddJsonOptions(options =>
                 {
-                    // This class is used to tweak the JSON serializer to better match the original AC_API JSON output. I think
-                    // the differences are mostly negligible to consumers of the API though and it might be better to just let
-                    // ASP.NET handle things in the default way.
-                    options.SerializerSettings.ContractResolver = new CustomContractResolver();
+                    // This helps maintain the case sensitivity when displaying JSON results. (e.g. OID vs. oid)
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 });
 
             services.AddAuthentication("Basic")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
+
+            services.AddDbContext<AssessmentCenterContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

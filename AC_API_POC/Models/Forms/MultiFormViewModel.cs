@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace AssessmentCenter.Models.Forms
 {
-    public class FormIdentifier
+    [XmlRoot(ElementName = "forms")]
+    public class MultiFormViewModel
     {
-        [XmlAttribute]
-        public Guid OID
+        public MultiFormViewModel()
         {
-            get;
-            set;
         }
 
-        [XmlAttribute]
-        public string Name
+        [XmlElement(ElementName = "form")]
+        public List<FormMetaDataViewModel> Form
         {
             get;
             set;
